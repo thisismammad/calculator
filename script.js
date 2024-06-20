@@ -52,7 +52,11 @@ bs.addEventListener('click', () => {
 
 for (const operator of operators) {
     operator.addEventListener('click', () => {
-
+        if(clickedEqual){
+            phrase.textContent = ans;
+            result.textContent = "";
+            clickedEqual = false;
+        }
         if (!clickedOprator) {
             phrase.textContent += operator.textContent;
             clickedOprator = true;
