@@ -133,9 +133,11 @@ function reset() {
 }
 
 function calculator() {
-    let sp = phrase.textContent.split(op);
-    num1 = Number(sp[0]);
-    num2 = Number(sp[1]);
+    let index = phrase.textContent.lastIndexOf(op);
+    num1 = Number.parseFloat(phrase.textContent.substring(0,index));
+    num2 = Number.parseFloat(phrase.textContent.substring(index+1));
+    console.log(num1)
+    console.log(num2)
     switch (op) {
         case "/":
             ans = num1 / num2;
@@ -153,7 +155,7 @@ function calculator() {
             ans = "Invalid";
     }
     clickedOprator = false;
-    if (!Number.isInteger(ans)) {
+    if (!Number.isInteger(ans) && ans.toString().length>10) {
         ans = ans.toFixed(10);
     }
     if(ans === "Infinity"){
