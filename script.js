@@ -28,7 +28,7 @@ for (const number of numbers) {
         if (phrase.textContent === "" && number.textContent === ".") {
             phrase.textContent = "0.";
         }
-        if (number.textContent === "." && !phrase.textContent.includes(".")) {
+        if (number.textContent === "." && (!phrase.textContent.includes(".") || (phrase.textContent.indexOf(".") < phrase.textContent.indexOf(op)))) {
             phrase.textContent += number.textContent;
         } else if (number.textContent !== ".") {
             phrase.textContent += number.textContent;
@@ -123,7 +123,7 @@ function reset() {
     num1 = 0;
     num2 = 0;
     ans = 0;
-    op = "";
+    op = "+";
 }
 
 function calculator() {
@@ -148,7 +148,7 @@ function calculator() {
             ans = "Invalid";
     }
     clickedOprator = false;
-    if(!Number.isInteger(ans)){
+    if (!Number.isInteger(ans)) {
         ans = ans.toFixed(10);
     }
     return ans
