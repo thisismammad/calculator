@@ -60,14 +60,23 @@ ac.addEventListener('click', () => {
     reset();
 });
 
-// bs.addEventListener('click', () => {
-//     phrase.textContent = phrase.textContent.slice(0, -1);
-//     result.textContent = "";
-//     clickedEqual = false;
-//     if (phrase.textContent === "") {
-//         phrase.textContent = "0";
-//     }
-// });
+bs.addEventListener('click', () => {
+    if(isNaN(Number(phrase.textContent.charAt(phrase.length -1))) === false){
+        answers.pop();
+    }
+    phrase.textContent = phrase.textContent.slice(0, -1);
+    result.textContent = "";
+    clickedEqual = false;
+    if (phrase.textContent.search(/[\+\-\*\/]/g) === -1) {
+        clickedOprator = false;
+    } else {
+
+        clickedOprator = true;
+    }
+    if (phrase.textContent === "") {
+        phrase.textContent = "0";
+    }
+});
 
 for (const operator of operators) {
     operator.addEventListener('click', () => {
@@ -105,7 +114,7 @@ equal.addEventListener('click', () => {
                 phrase.textContent += equal.textContent;
 
             }
-        }else{
+        } else {
             phrase.textContent += equal.textContent;
         }
 
