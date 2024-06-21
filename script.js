@@ -12,8 +12,7 @@ let num1 = 0;
 let num2 = 0;
 let ans = 0;
 let op = "";
-
-let answers = [];
+let secondNumClick = false;
 
 clickedOprator = false;
 for (const number of numbers) {
@@ -37,20 +36,9 @@ for (const number of numbers) {
 
 
         if (clickedOprator) {
-            let sp = phrase.textContent.split(op);
-
-            num2 = Number(sp[sp.length - 1]);
-            console.log("num2 " + num2);
-            if (answers.length > 0) {
-                num1 = answers[answers.length - 1];
-            } else {
-                num1 = Number(sp[0]);
-            }
-            console.log("num1 " + num1);
-
-            answers.push(calculator(num1, num2, op));
-            console.log("ans: " + answers);
+            calculator();
             clickedOprator = false;
+            secondNumClick = true;
         }
     });
 
@@ -61,38 +49,43 @@ ac.addEventListener('click', () => {
 });
 
 bs.addEventListener('click', () => {
-    if(isNaN(Number(phrase.textContent.charAt(phrase.length -1))) === false){
-        answers.pop();
+    if (isNaN(phrase.textContent.charAt(phrase.textContent.length - 1))) {
+        clickedOprator = false;
+    } else {
+        clickedOprator = true;
     }
     phrase.textContent = phrase.textContent.slice(0, -1);
     result.textContent = "";
     clickedEqual = false;
-    if (phrase.textContent.search(/[\+\-\*\/]/g) === -1) {
-        clickedOprator = false;
-    } else {
-
-        clickedOprator = true;
+    if (phrase.textContent.split(op).length === 1) {
+        ans = Number(phrase.textContent);
     }
     if (phrase.textContent === "") {
         phrase.textContent = "0";
+        reset();
     }
 });
 
 for (const operator of operators) {
     operator.addEventListener('click', () => {
         if (clickedEqual) {
-            phrase.textContent = answers[answers.length - 1];
+            phrase.textContent = ans;
             result.textContent = "";
             clickedEqual = false;
+        }
+        if (secondNumClick) {
+            phrase.textContent = ans;
+            secondNumClick = false;
         }
         if (!clickedOprator) {
             phrase.textContent += operator.textContent;
             clickedOprator = true;
             op = operator.textContent;
-        }
-        if (op !== operator.textContent) {
+
+        } else if (op !== operator.textContent) {
             phrase.textContent = phrase.textContent.slice(0, -1);
             phrase.textContent += operator.textContent;
+            op = operator.textContent;
         }
 
 
@@ -102,39 +95,42 @@ for (const operator of operators) {
 
 equal.addEventListener('click', () => {
     if (!clickedEqual) {
-        if (answers.length === 0) {
-            if (!clickedOprator) {
-                result.textContent = phrase.textContent;
-                answers.push(Number(phrase.textContent));
-                phrase.textContent += equal.textContent;
-            } else {
-                phrase.textContent = phrase.textContent.slice(0, -1);
-                answers.push(Number(phrase.textContent));
-                result.textContent += phrase.textContent;
-                phrase.textContent += equal.textContent;
-
-            }
+        let sp = phrase.textContent.split(op);
+        if (sp[1] === undefined) {
+            result.textContent = phrase.textContent;
+            phrase.textContent += equal.textContent;
+        } else if (sp[1] === '') {
+            phrase.textContent = phrase.textContent.slice(0, -1);
+            result.textContent = phrase.textContent;
+            phrase.textContent += equal.textContent;
+            ans = Number(result.textContent);
         } else {
             phrase.textContent += equal.textContent;
+            result.textContent = ans;
         }
 
-        result.textContent = answers[answers.length - 1];
-        clickedEqual = true;
     }
+    clickedEqual = true;
+
 });
 
 
 function reset() {
     phrase.textContent = "0";
     result.textContent = "";
+    clickedOprator = false;
+    clickedEqual = false;
+    secondNumClick = false;
     num1 = 0;
     num2 = 0;
-    answers = [];
     ans = 0;
     op = "";
 }
 
-function calculator(num1, num2, op) {
+function calculator() {
+    let sp = phrase.textContent.split(op);
+    num1 = Number(sp[0]);
+    num2 = Number(sp[1]);
     console.log(num1, num2, op);
     switch (op) {
         case "/":
@@ -153,5 +149,6 @@ function calculator(num1, num2, op) {
             ans = "Invalid";
     }
     clickedOprator = false;
+
     return ans
 }
