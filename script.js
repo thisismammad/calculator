@@ -11,7 +11,7 @@ clickedEqual = false;
 let num1 = 0;
 let num2 = 0;
 let ans = 0;
-let op = "";
+let op = "+";
 let secondNumClick = false;
 
 clickedOprator = false;
@@ -51,7 +51,7 @@ ac.addEventListener('click', () => {
 bs.addEventListener('click', () => {
     if (isNaN(phrase.textContent.charAt(phrase.textContent.length - 1))) {
         clickedOprator = false;
-    } else {
+    } else if(phrase.textContent.includes(op) === false) {
         clickedOprator = true;
     }
     phrase.textContent = phrase.textContent.slice(0, -1);
@@ -105,6 +105,7 @@ equal.addEventListener('click', () => {
             phrase.textContent += equal.textContent;
             ans = Number(result.textContent);
         } else {
+            calculator();
             phrase.textContent += equal.textContent;
             result.textContent = ans;
         }
@@ -149,6 +150,8 @@ function calculator() {
             ans = "Invalid";
     }
     clickedOprator = false;
-
+    if(!Number.isInteger(ans)){
+        ans = ans.toFixed(10);
+    }
     return ans
 }
