@@ -62,6 +62,10 @@ bs.addEventListener('click', () => {
         phrase.textContent = "0";
         reset();
     }
+
+    if(ans === "Can't divide by zero"){
+        reset();
+    }
 });
 
 for (const operator of operators) {
@@ -151,6 +155,9 @@ function calculator() {
     clickedOprator = false;
     if (!Number.isInteger(ans)) {
         ans = ans.toFixed(10);
+    }
+    if(ans === "Infinity"){
+        ans = "Can't divide by zero";
     }
     return ans
 }
