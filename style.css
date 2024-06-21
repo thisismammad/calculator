@@ -104,11 +104,3 @@ body {
     font-size: x-large;
 }
 
-@media screen and (max-width:425px) {
-    .container {
-        margin-top: 50px;
-    }
-    
-
-
-}
