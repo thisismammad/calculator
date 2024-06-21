@@ -51,8 +51,6 @@ ac.addEventListener('click', () => {
 bs.addEventListener('click', () => {
     if (isNaN(phrase.textContent.charAt(phrase.textContent.length - 1))) {
         clickedOprator = false;
-    } else if(phrase.textContent.includes(op) === false) {
-        clickedOprator = true;
     }
     phrase.textContent = phrase.textContent.slice(0, -1);
     result.textContent = "";
