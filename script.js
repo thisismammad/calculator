@@ -28,13 +28,11 @@ for (const number of numbers) {
         if (phrase.textContent === "" && number.textContent === ".") {
             phrase.textContent = "0.";
         }
-        if (number.textContent === "." && (!phrase.textContent.includes(".") || (phrase.textContent.indexOf(".") < phrase.textContent.indexOf(op)))) {
+        if (number.textContent === "." && (!phrase.textContent.includes(".") || (phrase.textContent.lastIndexOf(".") < phrase.textContent.lastIndexOf(op)))) {
             phrase.textContent += number.textContent;
         } else if (number.textContent !== ".") {
             phrase.textContent += number.textContent;
         }
-
-
         if (clickedOprator) {
             calculator();
             clickedOprator = false;
@@ -90,7 +88,6 @@ for (const operator of operators) {
             op = operator.textContent;
         }
 
-
     });
 }
 
@@ -136,8 +133,6 @@ function calculator() {
     let index = phrase.textContent.lastIndexOf(op);
     num1 = Number.parseFloat(phrase.textContent.substring(0, index));
     num2 = Number.parseFloat(phrase.textContent.substring(index + 1));
-    console.log(num1)
-    console.log(num2)
     switch (op) {
         case "/":
             ans = num1 / num2;
@@ -155,7 +150,7 @@ function calculator() {
             ans = "Invalid";
     }
     clickedOprator = false;
-    if (ans === Infinity) {
+    if (ans === Infinity || isNaN(ans)) {
         ans = "Can't divide by zero";
     } else if (!Number.isInteger(ans) && ans.toString().length > 10) {
         ans = ans.toFixed(10);
