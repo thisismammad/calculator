@@ -97,6 +97,7 @@ equal.addEventListener('click', () => {
         if (sp[1] === undefined) {
             result.textContent = phrase.textContent;
             phrase.textContent += equal.textContent;
+            ans = Number(result.textContent);
         } else if (sp[1] === '') {
             phrase.textContent = phrase.textContent.slice(0, -1);
             result.textContent = phrase.textContent;
@@ -110,6 +111,7 @@ equal.addEventListener('click', () => {
 
     }
     clickedEqual = true;
+    clickedOprator = false;
 
 });
 
@@ -130,7 +132,6 @@ function calculator() {
     let sp = phrase.textContent.split(op);
     num1 = Number(sp[0]);
     num2 = Number(sp[1]);
-    console.log(num1, num2, op);
     switch (op) {
         case "/":
             ans = num1 / num2;
