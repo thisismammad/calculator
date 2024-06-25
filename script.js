@@ -51,6 +51,7 @@ for (const number of numbers) {
         phrase.textContent += number.textContent;
       }
     }
+    clickedOprator = false;
   });
 }
 
@@ -85,12 +86,12 @@ for (const operator of operators) {
       result.textContent = "";
       clickedEqual = false;
     }
-    calculator();
+    // // calculator();
 
-    if (!isNaN(num1) && !isNaN(num2)) {
-      phrase.textContent = ans;
-      result.textContent = "";
-    }
+    // if (!isNaN(num1) && !isNaN(num2)) {
+    //   phrase.textContent = ans;
+    //   result.textContent = "";
+    // }
 
     if (!clickedOprator) {
       phrase.textContent += operator.textContent;
@@ -106,24 +107,49 @@ for (const operator of operators) {
 
 equal.addEventListener("click", () => {
   if (!clickedEqual) {
-    let sp = phrase.textContent.split(op);
-    if (sp[1] === undefined) {
-      result.textContent = phrase.textContent;
-      phrase.textContent += equal.textContent;
-      ans = Number(result.textContent);
-    } else if (sp[1] === "") {
-      phrase.textContent = phrase.textContent.slice(0, -1);
-      result.textContent = phrase.textContent;
-      phrase.textContent += equal.textContent;
-      ans = Number(result.textContent);
+    phraseTxt = phrase.textContent;
+    if (phraseTxt.search(/[A-Za-z]/g) !== -1) {
+      reset();
+      result.textContent = "Invalid Input";
     } else {
-      calculator();
-      phrase.textContent += equal.textContent;
-      result.textContent = ans;
+      let sp = phraseTxt.split(op);
+
+      // result.textContent  = ans
+
+      if (sp[1] === undefined) {
+        if (sp[0][sp.length - 1] === ".") {
+          sp[0] = sp[0].slice(0, -1);
+        } else {
+          result.textContent = Number(sp[0]);
+          phrase.textContent += equal.textContent;
+          ans = Number(sp[0]);
+        }
+      } else if (sp[1] === "") {
+        phrase.textContent = phrase.textContent.slice(0, -1);
+        result.textContent = phrase.textContent;
+        phrase.textContent += equal.textContent;
+        ans = Number(result.textContent);
+      } else {
+        // calculator();
+        if (sp[1] === ".") {
+          result.textContent = Number(sp[0]);
+          phrase.textContent += equal.textContent;
+          ans = Number(sp[0]);
+        } else {
+          ans = eval(phrase.textContent);
+          if (ans === Infinity || isNaN(ans)) {
+            ans = "Can't divide by zero";
+          } else if (!Number.isInteger(ans) && ans.toString().length > 10) {
+            ans = ans.toFixed(10);
+          }
+          phrase.textContent += equal.textContent;
+          result.textContent = ans;
+        }
+      }
     }
+    clickedEqual = true;
+    clickedOprator = false;
   }
-  clickedEqual = true;
-  clickedOprator = false;
 });
 
 function reset() {
@@ -138,32 +164,32 @@ function reset() {
   op = "+";
 }
 
-function calculator() {
-  let index = phrase.textContent.lastIndexOf(op);
-  num1 = Number.parseFloat(phrase.textContent.substring(0, index));
-  num2 = Number.parseFloat(phrase.textContent.substring(index + 1));
-  if (!isNaN(num1) && !isNaN(num2)) {
-    switch (op) {
-      case "/":
-        ans = num1 / num2;
-        break;
-      case "*":
-        ans = num1 * num2;
-        break;
-      case "-":
-        ans = num1 - num2;
-        break;
-      case "+":
-        ans = num1 + num2;
-        break;
-      default:
-        ans = "Invalid";
-    }
-    clickedOprator = false;
-    if (ans === Infinity || isNaN(ans)) {
-      ans = "Can't divide by zero";
-    } else if (!Number.isInteger(ans) && ans.toString().length > 10) {
-      ans = ans.toFixed(10);
-    }
-  }
-}
+// function calculator() {
+//   let index = phrase.textContent.lastIndexOf(op);
+//   num1 = Number.parseFloat(phrase.textContent.substring(0, index));
+//   num2 = Number.parseFloat(phrase.textContent.substring(index + 1));
+//   if (!isNaN(num1) && !isNaN(num2)) {
+//     switch (op) {
+//       case "/":
+//         ans = num1 / num2;
+//         break;
+//       case "*":
+//         ans = num1 * num2;
+//         break;
+//       case "-":
+//         ans = num1 - num2;
+//         break;
+//       case "+":
+//         ans = num1 + num2;
+//         break;
+//       default:
+//         ans = "Invalid";
+//     }
+//     clickedOprator = false;
+//     if (ans === Infinity || isNaN(ans)) {
+//       ans = "Can't divide by zero";
+//     } else if (!Number.isInteger(ans) && ans.toString().length > 10) {
+//       ans = ans.toFixed(10);
+//     }
+//   }
+// }
